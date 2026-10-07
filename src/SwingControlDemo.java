@@ -1,8 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Locale;
 import javax.swing.*;
+import java.awt.event.KeyListener;
 
-public class SwingControlDemo implements ActionListener {
+public class SwingControlDemo implements ActionListener, KeyListener{
     private JFrame mainFrame;
     private JLabel statusLabel;
     private JPanel controlPanel;
@@ -99,25 +101,37 @@ public class SwingControlDemo implements ActionListener {
         outputArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(outputArea);
         mainFrame.add(scrollPane, BorderLayout.CENTER);
+        outputArea.addKeyListener(this);
        // scrollPane.setVerticalScrollBar();
         JButton resetButton = new JButton("Reset");
         JButton submitButton = new JButton("Submit");
+        JButton lowercaseButton = new JButton("Lowercase");
 
 
         resetButton.setActionCommand("Reset");
         submitButton.setActionCommand("Submit");
+        lowercaseButton.setActionCommand("Lowercase");
 
 
 
         resetButton.addActionListener(new ButtonClickListener());
         submitButton.addActionListener(new ButtonClickListener());
+        lowercaseButton.addActionListener(new ButtonClickListener());
 
 
         controlPanel.add(resetButton);
         controlPanel.add(submitButton);
+        controlPanel.add(lowercaseButton);
 
 
         mainFrame.setVisible(true);
+
+
+        mainFrame.setBackground(new Color(64, 163, 69));// Main frame Background helped by Will
+        outputArea.setBackground(new Color(114, 172, 114));
+        inputField.setBackground(new Color(175, 218, 177));
+        controlPanel.setBackground(new Color(175, 218, 177));
+
     }
 
     @Override
@@ -132,15 +146,44 @@ public class SwingControlDemo implements ActionListener {
             ta.selectAll();
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        if (key == 10) {
+
+            outputArea.setText(inputField.getText());
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+        int key = e.getKeyCode();
+        if (key == 10) {
+            outputArea.setText(inputField.getText());
+
+    }
+
+    }
+
+
     private class ButtonClickListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
 
-            if (command.equals("Submit")) {
+            if (command.equals("Submit")) {// Sefa helped in Said code
                 outputArea.setText(inputField.getText());
             } else if (command.equals("Reset")) {
                 inputField.setText("");
                 outputArea.setText("");
+
+            } else if (command.equals("Lowercase")) {
+                outputArea.setText(inputField.getText().toLowerCase());
 
             }
         }
